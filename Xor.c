@@ -74,12 +74,15 @@ bool insertarFinal(Lista *list, int val){
     list->ultimo=newp;
     return true;
 }
-
+    //Funcion para insertar ordenado
 bool insertarOrden(Lista *list,int val){
     Nodo *prev=NULL;
     Nodo *curr=list->primer;
     Nodo *next=list->primer;
     Nodo *newp=crearNodo(val);
+    /*Luego de crear el nuevo nodo se verifica que no este vacio por algun error en malloc
+    luego se verifica que sea menor o igual que el primero, en caso de ser verdadero, solo se inserta al principio
+    de la misma forma con el ultimo*/
     if(newp==NULL)
         return false;
     if(val<=list->primer->elemento){ 
@@ -91,7 +94,9 @@ bool insertarOrden(Lista *list,int val){
         insertarFinal(list,val);
         return true;
     }
-    
+    /*Si no es ninguna de las anteriores significa que se encuentra dentro de la lista,
+    por lo que se recorre la lista hasta que el elemento sea mayor o igual que el actual
+    y menor que el siguiente, cuando esta condicion se cumpla, se inserta*/
     while (curr){
         next=XOR(prev,curr->AA);
         if(curr->elemento<=val && val < next->elemento){
@@ -106,12 +111,13 @@ bool insertarOrden(Lista *list,int val){
 
     return false;
 }
-
+    //funcion para buscar algun valor en la lista
 bool buscar(Lista *list, int val){
     Nodo *prev=NULL;
     Nodo *next;
     Nodo *curr=list->primer;
-
+    /*Se recorre la lista hasta que algun elemento sea igual al valor buscado
+    en caso de que no se encuentre ninguno, se retorna falso*/
     while (curr){
         if(curr->elemento==val)
             return true;
@@ -123,8 +129,10 @@ bool buscar(Lista *list, int val){
 }
 
 bool sacarPrincipio(Lista *list, int *val){
+    //Se verifica que la lista contenga elementos
     if (list->primer==NULL)
         return false;
+    //Se toma el valor, se elimina el apuntador a ese nodo de la lista y se hace free
     Nodo *prev=list->primer;
     *val=list->primer->elemento;
     list->primer=list->primer->AA;
@@ -134,8 +142,10 @@ bool sacarPrincipio(Lista *list, int *val){
 }
 
 bool sacarFinal(Lista *list, int *val){
+    //Se verifica que la lista no este vacia
     if (list->ultimo==NULL)
         return false;
+    //misma operacion anterior con la diferencia que ahora es el ultimo
     Nodo *prev=list->ultimo;
     *val=list->ultimo->elemento;
     list->ultimo=list->ultimo->AA;
@@ -148,6 +158,7 @@ bool sacarPrimeraOcurrencia(Lista *list, int val){
     Nodo *prev=NULL;
     Nodo *next;
     Nodo *curr=list->primer;
+    //Se recorre la lista hasta el elemento sea igual al valor que se quiere sacar
     while (curr){
         if(curr->elemento==val){
             if(prev==NULL)
